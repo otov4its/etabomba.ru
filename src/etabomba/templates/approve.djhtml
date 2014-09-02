@@ -1,0 +1,62 @@
+{% extends "base.djhtml" %}
+
+{% block title %}Подтвердить получение{% endblock %}
+
+{% block nav_active_approve %}active{% endblock %}
+
+{% block content %}
+
+{% if success %}
+    <h2>Подтверждение транзакции прошло успешно</h2>
+{% endif %}
+
+<p>
+	Пожалуйста внимательно заполните поля этой формы.
+	<a href="/faq/#a9">Почему важно подтверждать получение средств?</a> 
+</p>
+
+<form method="post">
+	{% csrf_token %}
+	
+	<div class="non_field_errorlist">
+		{{ form.non_field_errors }}	
+	</div>
+	
+	<div class="fieldWrapper {% if form.p_no.errors %}border-red{% endif %}">
+		{{ form.p_no.errors }}
+	    {{ form.p_no }}
+	    <div class="help_text">
+	    	{{ form.p_no.help_text }}
+	    </div>
+    </div>
+    
+    <div class="fieldWrapper {% if form.a_no_from.errors %}border-red{% endif %}">
+		{{ form.a_no_from.errors }}
+	    {{ form.a_no_from }}
+	    <div class="help_text">
+	    	{{ form.a_no_from.help_text }}
+	    </div>
+    </div>
+    
+    <br /><br />
+    
+    <div class="fieldWrapper {% if form.a_no_to.errors %}border-red{% endif %}">
+		{{ form.a_no_to.errors }}
+	    {{ form.a_no_to }}
+	    <div class="help_text">
+	    	{{ form.a_no_to.help_text }}
+	    </div>
+    </div>
+    
+    <div class="fieldWrapper {% if form.password.errors %}border-red{% endif %}">
+		{{ form.password.errors }}
+	    {{ form.password }}
+	    <div class="help_text">
+	    	{{ form.password.help_text }}
+	    </div>
+    </div>
+	
+	<input type="submit" value="подтвердить получение" />
+</form>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.djhtml" %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block nav_active_stats %}active{% endblock %}
+
+{% block page %}
+	<div id="stats">
+		<div id="head">
+			<div id="common">
+				<h2 class="thin-gray">МЫ ЗАРАБОТАЛИ:</h2>
+				<h1 class="big-orange">${{ stats.earned }}</h1>
+				<h2 class="thin-gray">ЗАРЕГИСТРИРОВАНО КУПЮР:</h2>
+				<h1 class="big-orange">{{ stats.p_count }}</h1>
+				<h2 class="thin-gray">VIP СЧЕТОВ:</h2>
+				<h1 class="big-orange">{{ stats.vip_count }}</h1>
+			</div>
+			
+			<div id="top10">
+				<h2>TOP 10</h2>
+				<p>Счёт&nbsp;&nbsp;&nbsp;&nbsp;Зарег. купюр</p>
+				<ol>
+				{% for vip_account in stats.vip_accounts_top10 %}
+					<li>{{ vip_account.acct }}&nbsp;&nbsp;&nbsp;&nbsp;<b>{{ vip_account.reg_papers_count }}</b></li>	    
+				{% endfor %}
+				</ol>
+			</div>
+		</div>
+		
+		{% if form.is_bound and form.is_valid %}
+			<br/>
+			<h1>{{ stats.account.acct }}</h1>
+			<br/>
+			<h2>ЗАРЕГИСТРИРОВАНО КУПЮР: <b>{{ stats.account.reg_papers_count }}</b></h2>
+			<h2>В КУПЮРАХ, ВСЕГО: <b>{{ stats.c_all }}</b></h2>
+			<h2>НА 1 МЕСТЕ: <b>{{ stats.c1 }}</b></h2>
+			<h2>НА 2 МЕСТЕ: <b>{{ stats.c2 }}</b></h2>
+			<h2>НА 3 МЕСТЕ: <b>{{ stats.c3 }}</b></h2>
+			<h2>НА 4 МЕСТЕ: <b>{{ stats.c4 }}</b></h2>
+			<h2>НА 5 МЕСТЕ: <b>{{ stats.c5 }}</b></h2>
+			<h2>НА 6 МЕСТЕ: <b>{{ stats.c6 }}</b></h2>
+		
+		{% else %}
+			<br/>
+			<form method="get">
+				{{ form.non_field_errors }}
+				<div class="fieldWrapper {% if form.a_no.errors %}border-red{% endif %}" style="width: 250px; margin: auto;">
+					{{ form.a_no.errors }}
+				    {{ form.a_no }}
+				    <div class="help_text">
+				    	{{ form.a_no.help_text }}
+				    </div>
+			    </div>
+				<input type="submit" value="статистика" />
+			</form>
+			
+		{% endif %}
+		
+	</div>
+{% endblock %}

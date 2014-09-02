@@ -1,0 +1,50 @@
+{% extends "base.djhtml" %}
+
+{% block title %}Проверить номер купюры{% endblock %}
+
+{% block nav_active_home %}active{% endblock %}
+
+{% block page-banner %}
+<div id="page-banner">
+	<div id="page-banner-inner">
+		<div id="latest-news">
+			<div class="head">ЗАРЕГИСТРИРОВАНО КУПЮР:</div>
+			<div class="news">{{ stats.p_count }}</div>
+			<div class="head2">VIP СЧЕТОВ: <span class="news2">{{ stats.vip_count }}</span></div>
+		</div>
+		<div id="latest-news">
+			<div class="head">МЫ ЗАРАБОТАЛИ:</div>
+			<div class="news">${{ stats.earned }}</div>
+			<div class="iam"><a href="/about/">Я тоже хочу!</a></div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+    
+	{% if form.is_bound and form.is_valid %}
+		
+		<form method="get" action="/payment/{{ form.cleaned_data.p_no }}/">
+			<h1>{{ form.cleaned_data.p_no }}</h1><br/>
+			<h2>Ура! Купюра зарегистрирована в системе!</h2><br/>
+			<input type="submit" value="продолжить" autofocus="autofocus" />
+		</form>
+		
+	{% else %}
+	
+		<form method="get">
+			{{ form.non_field_errors }}
+			<div class="fieldWrapper {% if form.p_no.errors %}border-red{% endif %}">
+				{{ form.p_no.errors }}
+			    {{ form.p_no }}
+			    <div class="help_text">
+			    	{{ form.p_no.help_text }}
+			    </div>
+		    </div>
+			<input type="submit" value="проверить" />
+		</form>
+		
+	{% endif %}
+	
+{% endblock %}

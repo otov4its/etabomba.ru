@@ -1,0 +1,51 @@
+{% extends "base.djhtml" %}
+
+{% block title %}Зарегистрировать купюру{% endblock %}
+
+{% block nav_active_register %}active{% endblock %}
+
+{% block content %}
+
+{% if success %}
+    <h2>Ура! Купюра зарегистрированa!</h2>
+    <p>
+    	А теперь пойдите и потратьте её, чтобы она начала приносить Вам доход,
+    	только не забудьте сделать пометку на купюре, например 
+    	"Введите номер купюры на etabomba.ru". <a href="/faq/#a11">Как делать пометки на купюрах?</a>
+    </p>
+{% endif %}
+
+<form method="post">
+	{% csrf_token %}
+	
+	<div class="non_field_errorlist">
+		{{ form.non_field_errors }}	
+	</div>
+	
+	<div class="fieldWrapper {% if form.p_no.errors %}border-red{% endif %}">
+		{{ form.p_no.errors }}
+	    {{ form.p_no }}
+	    <div class="help_text">
+	    	{{ form.p_no.help_text }}
+	    </div>
+    </div>
+    
+    <div class="fieldWrapper {% if form.a_no.errors %}border-red{% endif %}">
+		{{ form.a_no.errors }}
+	    {{ form.a_no }}
+	    <div class="help_text">
+	    	{{ form.a_no.help_text }}
+	    </div>
+    </div>
+	
+	<input type="submit" value="зарегистрировать" />
+</form>
+
+<p>
+	Регистрировать купюры могут только пользователи счетов 
+	со статусом VIP. После регистрации счёт находится на первом 
+	месте в списке. Ограничений на количество регистрируемых купюр нет.
+	<a href="/faq/#a10">Как получить VIP статус?</a>
+</p>
+
+{% endblock %}

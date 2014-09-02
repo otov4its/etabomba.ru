@@ -1,0 +1,63 @@
+{% extends "base.djhtml" %}
+
+{% block title %}Проверить статус{% endblock %}
+
+{% block content %}
+
+<h1>{{ p_no }}</h1>
+
+<p>
+	
+</p>
+
+<ol class="accounts_list">
+	{% for paper_acct in paper_accts %}
+		{% for acct, acct_ok in paper_acct.items %}
+			<li>
+				{% if acct_ok != '' %}
+					{{ acct }} <b>{{ acct_ok }}</b>
+				{% else %}
+					{% if payment_success and acct = whom %}
+						{{ acct }} <b>в обработке...</b> <a href="">обновить</a>
+					{% else %}
+						<form class="pm_payment_form" action="https://perfectmoney.com/api/step1.asp" method="POST">
+							{{ acct }}
+							<input type="hidden" name="PAYEE_ACCOUNT" value="{{ acct }}">
+							<input type="hidden" name="PAYEE_NAME" value="участнику проекта etabomba.ru">
+							<input type="hidden" name="PAYMENT_ID" value="">
+							<input type="hidden" name="PAYMENT_AMOUNT" value="1">
+							<input type="hidden" name="PAYMENT_UNITS" value="USD">
+							<input type="hidden" name="STATUS_URL" value="http://etabomba.ru/approve/">
+							<input type="hidden" name="PAYMENT_URL" value="http://etabomba.ru/payment/{{ p_no }}/?payment_success=True&whom={{ acct }}">
+							<input type="hidden" name="PAYMENT_URL_METHOD" value="LINK">
+							<input type="hidden" name="NOPAYMENT_URL" value="http://etabomba.ru/payment/{{ p_no }}/?payment_success=False&whom={{ acct }}">
+							<input type="hidden" name="NOPAYMENT_URL_METHOD" value="LINK">
+							<input type="hidden" name="SUGGESTED_MEMO" value="Оплата по купюре {{ p_no }}">
+							<input type="hidden" name="AVAILABLE_PAYMENT_METHODS" value="account">
+							<input type="hidden" name="FORCED_PAYMENT_METHOD" value="account">
+							<input type="hidden" name="BAGGAGE_FIELDS" value="PAPER">
+							<input type="hidden" name="PAPER" value="{{ p_no }}">
+							<input type="submit" name="PAYMENT_METHOD" value="$1">
+							{% if acct = whom %}
+								&nbsp;&nbsp;&nbsp;<b style="color: red;">платёж отменён</b>
+							{% endif %}
+						</form>
+					{% endif %}
+				{% endif %}
+			</li>
+		{% endfor %}
+	{% endfor %}
+</ol>
+
+<p>
+	Переведите $1 на каждый счёт <a href="http://perfectmoney.com/" target="_blank">Perfect Money</a> из списка. 
+	<a href="/faq/#a6">Как это сделать?</a>
+	Как только Вы переведёте все $6 - Ваш счёт попадёт на первое 
+	место в списке. После этого потратьте купюру, чтобы она начала приносить вам доход.
+	Кроме того Вы сами сможете регистрировать купюры, в которых 
+	Ваш счёт будет на первом месте. <a href="/faq/#a1">Как это работает?</a>
+</p>
+
+{% endblock %}
+
+
