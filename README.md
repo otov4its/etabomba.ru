@@ -1,4 +1,4 @@
 etabomba.ru
 ===========
 
-etabomba.ru project on Python/Django
+http://etabomba.ru project on Python/Django
